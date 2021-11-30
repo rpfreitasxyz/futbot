@@ -38,10 +38,12 @@ vetor_nomes <- tribble(
   "ATLETICO PARANAENSE - PR", "ATHLETICO PARANAENSE - PR"
 )
 
-tab <- seq(from = 2012, to = 2021, by = 1) %>%
-  enframe(name = NULL) %>%
-  rename(edicao = value) %>%
-  mutate(value = paste0("https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a",
+# Pega as series do Brasileirao disponiveis
+tab <- tibble(serie = c("A", "B")) %>%
+  # Expande para os anos disponiveis
+  expand(serie, edicao = 2012:2021) %>%
+  mutate(value = paste0("https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-",
+                        serie %>% str_to_lower(),
                         "/",
                         edicao)) %>%
   mutate(dados = map(.x = value, .f = trata_tabela)) %>%
@@ -54,4 +56,3 @@ tab <- seq(from = 2012, to = 2021, by = 1) %>%
   select(-c(value, nome_new))
 
 write.xlsx(tab_fin, "brasileirao_serie_a_2012-2021.xlsx")
-rm(CLUSTER)
