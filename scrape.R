@@ -57,6 +57,7 @@ tab_fin <- tab %>%
   mutate(Clube = if_else(!is.na(nome_new),
                          nome_new,
                          Clube)) %>%
-  select(-c(value, nome_new))
+  select(-c(value, nome_new)) %>%
+  arrange(serie, edicao, Posicao)
 
-write.xlsx(tab_fin, "brasileirao_serie_a_2012-2021.xlsx")
+write.xlsx(tab_fin, "brasileirao_serie_ab_2012-2021.xlsx")
