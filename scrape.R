@@ -7,8 +7,8 @@ library(xlsx)
 trata_tabela = function(url) {
   tabela_extraida <- read_html(curl(url, handle = curl::new_handle("useragent" = "Firefox/5.0"))) %>%
     # A ultima tabela eh dos artilheiros. Interessante...
-    html_table() %>%
-    .[[1]]
+    html_node(".tabela-expandir") %>%
+    html_table()
   
   tabela_final <- tabela_extraida %>%
     rename_with(~stri_trans_general(., "Latin-ASCII")) %>%
@@ -35,7 +35,9 @@ vetor_nomes <- tribble(
   ~nome_old, ~nome_new,
   "AMERICA FC - MG", "AMERICA - MG",
   "ATLETICO - PR", "ATHLETICO PARANAENSE - PR",
-  "ATLETICO PARANAENSE - PR", "ATHLETICO PARANAENSE - PR"
+  "ATLETICO PARANAENSE - PR", "ATHLETICO PARANAENSE - PR",
+  "ATLETICO MINEIRO - MG", "ATLETICO - MG",
+  "BRAGANTINO - SP", "RED BULL BRAGANTINO - SP"
 )
 
 # Pega as series do Brasileirao disponiveis
@@ -46,7 +48,9 @@ tab <- tibble(serie = c("A", "B")) %>%
                         serie %>% str_to_lower(),
                         "/",
                         edicao)) %>%
-  mutate(dados = map(.x = value, .f = trata_tabela)) %>%
+  mutate(dados = map(.x = value, .f = trata_tabela)) 
+
+tab_fin <- tab %>%
   unnest(dados) %>%
   mutate(Clube = str_remove(Clube, "[+-]?\\d*") %>% str_trim(side = "both") %>% str_to_upper()) %>%
   left_join(vetor_nomes, by = c("Clube" = "nome_old")) %>%
