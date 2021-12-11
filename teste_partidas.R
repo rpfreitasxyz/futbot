@@ -51,12 +51,16 @@ vetor_nomes <- tribble(
 tab_rodadas <- tab %>%
   unnest(dados) %>%
   select(-value) %>%
-  pivot_longer(cols = c("time_casa", "time_fora"), names_to = "casa_fora", values_to = "time") %>%
-  mutate(time = str_to_upper(time) %>% stri_trans_general("Latin-ASCII")) %>%
-  left_join(vetor_nomes, by = c("time" = "nome_old")) %>%
-  mutate(time = if_else(!is.na(nome_new),
+  mutate_at(vars(time_casa, time_fora), function(.x) str_to_upper(.x) %>% stri_trans_general("Latin-ASCII")) %>%
+  left_join(vetor_nomes, by = c("time_casa" = "nome_old")) %>%
+  mutate(time_casa = if_else(!is.na(nome_new),
                          nome_new,
-                        time)) %>%
+                        time_casa)) %>%
+  select(-nome_new) %>%
+  left_join(vetor_nomes, by = c("time_fora" = "nome_old")) %>%
+  mutate(time_fora = if_else(!is.na(nome_new),
+                             nome_new,
+                             time_fora)) %>%
   select(-nome_new) %>%
   arrange(serie, edicao, rodada)
 
