@@ -11,15 +11,15 @@ pega_partidas_placar <- function(url) {
                              html_nodes(".swiper-slide") %>%
                              html_attr("data-slide-index"),
                            each = 10) %>%
-                as.numeric() + 1, 
+                     as.numeric() + 1, 
               time_casa = page %>%
-                html_nodes(".time .pull-left") %>%
-                html_attr("title"),
+                  html_nodes(".time .pull-right") %>%
+                  html_attr("title"),
               placar = page %>%
                 html_nodes(".partida-horario") %>%
                 html_node("span") %>% html_text(),
               time_fora = page %>%
-                html_nodes(".time .pull-right") %>%
+                html_nodes(".time .pull-left") %>%
                 html_attr("title")) %>%
     separate(col = placar, into = c("placar_casa", "placar_fora"), sep = "x") %>%
     mutate_at(vars(placar_casa, placar_fora), as.numeric)
