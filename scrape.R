@@ -33,11 +33,14 @@ trata_tabela = function(url) {
 # Cria um tibble para mudar os nomes velhos para os novos
 vetor_nomes <- tribble(
   ~nome_old, ~nome_new,
+  "A.B.C. - RN", "ABC - RN",
+  "A.S.A. - AL", "ASA - AL",
   "AMERICA FC - MG", "AMERICA - MG",
   "ATLETICO - PR", "ATHLETICO PARANAENSE - PR",
   "ATLETICO PARANAENSE - PR", "ATHLETICO PARANAENSE - PR",
   "ATLETICO MINEIRO - MG", "ATLETICO - MG",
-  "BRAGANTINO - SP", "RED BULL BRAGANTINO - SP"
+  "BRAGANTINO - SP", "RED BULL BRAGANTINO - SP",
+  "C.R.B. - AL", "CRB - AL"
 )
 
 # Pega as series do Brasileirao disponiveis
