@@ -64,4 +64,4 @@ tab_rodadas <- tab %>%
   select(-nome_new) %>%
   arrange(serie, edicao, rodada)
 
-write.xlsx(tab_rodadas, "rodadas_brasileirao_serie_ab_2012-2021.xlsx")
+write.xlsx(tab_rodadas, "dados/rodadas_brasileirao_serie_ab_2012-2021.xlsx")

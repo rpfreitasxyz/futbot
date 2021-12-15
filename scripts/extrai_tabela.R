@@ -63,4 +63,4 @@ tab_fin <- tab %>%
   select(-c(value, nome_new)) %>%
   arrange(serie, edicao, Posicao)
 
-write.xlsx(tab_fin, "brasileirao_serie_ab_2012-2021.xlsx")
+write.xlsx(tab_fin, "dados/brasileirao_serie_ab_2012-2021.xlsx")
